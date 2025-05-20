@@ -12,12 +12,10 @@ export default function UserProfileView() {
   useEffect(() => {
     const fetchResumeData = async () => {
       try {
-        const token = Cookies.get("user-details");
-        if (!token) throw new Error("No token found");
+      
         // Use the endpoint that returns the full resume details
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/user-info`,
-          { headers: { Authorization: `Bearer ${token}` } }
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/user-info/${userId}`,
         );
         setResumeData(response.data);
       } catch (err) {
@@ -51,9 +49,6 @@ export default function UserProfileView() {
             <p className="text-gray-600">{resumeData.user?.username || "N/A"}</p>
             <p className="text-gray-600">
               {resumeData.user?.mobile || "N/A"}
-            </p>
-            <p className="text-gray-600">
-              {resumeData.user?.location || "N/A"}
             </p>
           </div>
         </div>

@@ -52,7 +52,7 @@ router.put(
   "/user/update",authMiddleware,updateUserInfo
 );
 // Fetch all user information
-router.get("/user-info", authMiddleware, getUserInfo);
+router.get("/user-info/:id", getUserInfo);
 
 // New route to fetch user info by id
 router.get("/users/:id", authMiddleware, getUserInfoById);

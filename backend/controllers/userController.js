@@ -152,9 +152,9 @@ const updateProfilePhoto = async (req, res) => {
  * Retrieve detailed user information (including associated records).
  */
 const getUserInfo = async (req, res) => {
-  const userId = req.user.id
+  const userId = req.params.id
     ;
-
+  console.log("User ID:", userId);
   try {
     const client = await pool.connect();
 
