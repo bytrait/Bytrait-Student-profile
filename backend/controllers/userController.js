@@ -91,6 +91,37 @@ const getUser = async (req, res) => {
   }
 };
 
+const getUsersByIds = async (req, res) => {
+  try {
+    const idsParam = req.query.ids;
+
+    if (!idsParam) {
+      return res.status(400).json({ message: "No user IDs provided" });
+    }
+
+    // Convert to integer array safely
+    const userIds = idsParam
+      .split(",")
+      .map(id => parseInt(id))
+      .filter(id => !isNaN(id));
+
+    if (userIds.length === 0) {
+      return res.status(400).json({ message: "Invalid user ID format" });
+    }
+
+    // Build dynamic query
+    const placeholders = userIds.map((_, index) => `$${index + 1}`).join(", ");
+    const query = `SELECT user_id, username, name, course, location FROM users WHERE user_id IN (${placeholders})`;
+
+    const result = await pool.query(query, userIds);
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error fetching users by IDs:", err.message);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
 /**
  * PUT /user/profile-photo
  * Update the profile photo for the authenticated user.
@@ -282,6 +313,7 @@ module.exports = {
   signup,
   login,
   getUser,
+  getUsersByIds,
   updateProfilePhoto,
   updateUserInfo,
   getUserInfo,

@@ -9,6 +9,7 @@ const {
   getUserInfo,
   getUserInfoById,
   updateUserInfo,
+  getUsersByIds,
 } = require("../controllers/userController");
 const cloudinary = require("../utils/cloudinary");
 const fs = require("fs");
@@ -40,6 +41,7 @@ router.post("/login", login);
 
 // Fetch user data
 router.get("/user", authMiddleware, getUser);
+router.get('/users', getUsersByIds);
 
 // Update profile photo
 router.put(
